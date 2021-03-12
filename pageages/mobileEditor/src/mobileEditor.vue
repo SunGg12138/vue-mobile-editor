@@ -3,14 +3,19 @@
         <div class="editor">
             <div ref="toolbar" class="toolbar"></div>
             <div style="margin-left: 100px;">
-                <div style="margin: 0 auto;" :style="{ width: view_size.width * view_scale + 'px', height: view_size.height * view_scale + 'px' }">
-                    <div class="view" :style="viewStyle">
-                        <div v-if="showViewHead" class="view-head" v-text="viewHeadText" :style="viewHeadStyle"></div>
+                <div style="margin: 0 auto;" :style="{ width: view_size.width + 'px', height: view_size.height + 'px' }">
+                    <div class="view" :style="view_style">
+                        <div v-if="showViewHead" class="view-head" v-text="viewHeadText" :style="view_head_style"></div>
                         <div class="content" :style="contentStyle">
-                            <slot name="content-head"></slot>
+                            <div style="margin-bottom: 8px;"><slot name="content-head"></slot></div>
                             <div ref="text" class="text"></div>
                         </div>
                     </div>
+                </div>
+                <div style="text-align: center; margin-top: 10px;">
+                    <select @change="changeMobileType">
+                        <option v-for="(item, index) in mobile_types" :key="index" :value="index" v-text="item.name"></option>
+                    </select>
                 </div>
             </div>
         </div>
@@ -19,16 +24,18 @@
 
 <script>
 import E from 'wangeditor';
+import MOBILE_TYPES from '../config/MOBILE_TYPES';
 export default {
     name: 'MobileEditor',
 
     data () {
         return {
-            view_size: {
-                width: 750,
-                height: 1334
-            },
-            view_scale: 0.45,
+            // 机型
+            mobile_types: [],
+            mobile_type_index: 0,
+            
+            // 自动缩放比例
+            scale: 0.75
         };
     },
 
@@ -41,7 +48,7 @@ export default {
             type: Boolean,
             default: true,
         },
-        uploadImgFunc: {
+        customUploadImg: {
             type: Function,
             default: null,
         },
@@ -76,18 +83,43 @@ export default {
             }
         },
     },
+    
+    computed: {
+        view_style () {
+            const type = this.mobile_types[this.mobile_type_index];
+            if (type && type.style) return Object.assign({}, this.viewStyle, type.style);
+            return this.viewStyle;
+        },
+        view_head_style () {
+            const type = this.mobile_types[this.mobile_type_index];
+            if (type && type.style) return Object.assign({}, this.viewHeadStyle, type.head_style);
+            return this.viewHeadStyle;
+        },
+        view_size () {
+            const type = this.mobile_types[this.mobile_type_index];
+            return {
+                width: type? type.width * this.scale : 375,
+                height: type? type.height * this.scale : 667,
+            };
+        },
+    },
 
     created () {
+        this.mobile_types = MOBILE_TYPES;
         this.$nextTick(() => {
             const editor = new E(this.$refs.toolbar, this.$refs.text);
-
+            
             editor.config.placeholder = this.placeholder;
+
+            // 图片是否直接转成base64
             editor.config.uploadImgShowBase64 = this.base64Img;
 
-            if (this.uploadImgFunc) {
-                editor.config.customUploadImg = this.uploadImgFunc;
+            // 自定义上传图片函数
+            if (this.customUploadImg) {
+                editor.config.customUploadImg = this.customUploadImg;
             }
 
+            // 菜单配置
             editor.config.menus = [
                 'head',
                 'bold',
@@ -115,6 +147,7 @@ export default {
                 'redo',
             ];
 
+            // 内容改变事件
             editor.config.onchange = (content) => {
                 this.$emit('input', content);
                 this.$emit('change', content);
@@ -124,6 +157,12 @@ export default {
             editor.txt.html(this.value);
         });
     },
+
+    methods: {
+        changeMobileType (event) {
+            this.mobile_type_index = event.srcElement.value;
+        }
+    }
 }
 </script>
 
@@ -140,14 +179,16 @@ export default {
     border: 1px solid #ccc;
 }
 .editor .view {
-    border: 1px solid #ccc;
+    border: 1px solid #ddd;
     width: 100%;
     height: 100%;
 }
 .editor .view-head {
-    line-height: 40px;
+    height: 32px;
+    line-height: 32px;
     text-align: center;
-    background: #eee;
-    color: #666;
+    background: #f8f8f8;
+    color: #000;
+    font-size: 14px;
 }
 </style>

@@ -4,10 +4,11 @@
             v-model="content"
             :show-view-head="true"
             view-head-text="我的文章"
-            :view-head-style="{ color: 'white', backgroundColor: 'green' }"
-            :view-style="{ borderColor: 'yellow' }"
+            :view-head-style="{ color: '#000', backgroundColor: '#f8f8f8' }"
+            :view-style="{ borderColor: '#ddd' }"
             @change="change"
         >
+            <!-- 内容头部信息，可以展示标题名称，发布时间等信息 -->
             <div slot="content-head" style="padding: 0 10px;">
                 <div style="font-size: 18px; padding: 10px 0;">好好吃饭，天天向上</div>
                 <div class="caption">
@@ -24,7 +25,7 @@ export default {
     name: "App",
     data () {
         return {
-            content: '<h1>好多年</h1>'
+            content: '<b>好多年</b>'
         };
     },
 
