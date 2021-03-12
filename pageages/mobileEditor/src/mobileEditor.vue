@@ -2,13 +2,13 @@
     <div>
         <div class="editor">
             <div ref="toolbar" class="toolbar"></div>
-            <div style="margin-left: 100px;">
+            <div style="margin-left: 95px;">
                 <div style="margin: 0 auto;" :style="{ width: view_size.width + 'px', height: view_size.height + 'px' }">
                     <div class="view" :style="view_style">
                         <div v-if="showViewHead" class="view-head" v-text="viewHeadText" :style="view_head_style"></div>
                         <div class="content" :style="contentStyle">
                             <div style="margin-bottom: 8px;"><slot name="content-head"></slot></div>
-                            <div ref="text" class="text"></div>
+                            <div ref="text" style="height: 500px;"></div>
                         </div>
                     </div>
                 </div>
@@ -82,6 +82,12 @@ export default {
                 return {};
             }
         },
+        mobileTypes: {
+            type: Array,
+            default: function() {
+                return [];
+            }
+        }
     },
     
     computed: {
@@ -105,11 +111,15 @@ export default {
     },
 
     created () {
-        this.mobile_types = MOBILE_TYPES;
+        // 设置机型列表
+        this.mobile_types = [].concat(this.mobileTypes).concat(MOBILE_TYPES);
+
         this.$nextTick(() => {
             const editor = new E(this.$refs.toolbar, this.$refs.text);
             
             editor.config.placeholder = this.placeholder;
+
+            editor.config.height = 300;
 
             // 图片是否直接转成base64
             editor.config.uploadImgShowBase64 = this.base64Img;
@@ -172,7 +182,7 @@ export default {
     position: relative;
 }
 .editor .toolbar {
-    width: 100px;
+    width: 95px;
     position: absolute;
     top: 0;
     left: 0;
@@ -182,6 +192,7 @@ export default {
     border: 1px solid #ddd;
     width: 100%;
     height: 100%;
+    overflow-y: scroll;
 }
 .editor .view-head {
     height: 32px;

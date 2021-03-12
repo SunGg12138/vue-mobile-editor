@@ -6,6 +6,7 @@
             view-head-text="我的文章"
             :view-head-style="{ color: '#000', backgroundColor: '#f8f8f8' }"
             :view-style="{ borderColor: '#ddd' }"
+            :mobile-types="mobile_types"
             @change="change"
         >
             <!-- 内容头部信息，可以展示标题名称，发布时间等信息 -->
@@ -25,7 +26,12 @@ export default {
     name: "App",
     data () {
         return {
-            content: '<b>好多年</b>'
+            content: '<b>好多年</b>',
+            mobile_types: [{
+                name: '自定义 400*600',
+                width: 400,
+                height: 600,
+            }]
         };
     },
 
