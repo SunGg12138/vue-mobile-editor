@@ -8,7 +8,7 @@
                         <div v-if="showViewHead" class="view-head" v-text="viewHeadText" :style="view_head_style"></div>
                         <div class="content" :style="contentStyle">
                             <div style="margin-bottom: 8px;"><slot name="content-head"></slot></div>
-                            <div ref="text" style="height: 500px;"></div>
+                            <div ref="text" style="min-height: 500px;"></div>
                         </div>
                     </div>
                 </div>
@@ -35,7 +35,9 @@ export default {
             mobile_type_index: 0,
             
             // 自动缩放比例
-            scale: 0.75
+            scale: 0.75,
+
+            editor: {},
         };
     },
 
@@ -89,6 +91,14 @@ export default {
             }
         }
     },
+
+    watch: {
+        value (newVal, oldVal) {
+            if (newVal !== oldVal && newVal !== this.editor.txt.html()) {
+                this.editor.txt.html(this.value);
+            }
+        },
+    },
     
     computed: {
         view_style () {
@@ -115,7 +125,7 @@ export default {
         this.mobile_types = [].concat(this.mobileTypes).concat(MOBILE_TYPES);
 
         this.$nextTick(() => {
-            const editor = new E(this.$refs.toolbar, this.$refs.text);
+            const editor = this.editor = new E(this.$refs.toolbar, this.$refs.text);
             
             editor.config.placeholder = this.placeholder;
 
@@ -164,7 +174,6 @@ export default {
             };
             
             editor.create();
-            editor.txt.html(this.value);
         });
     },
 
@@ -178,7 +187,6 @@ export default {
 
 <style scoped>
 .editor {
-    clear: both;
     position: relative;
 }
 .editor .toolbar {
@@ -200,6 +208,6 @@ export default {
     text-align: center;
     background: #f8f8f8;
     color: #000;
-    font-size: 14px;
+    font-size: 12px;
 }
 </style>

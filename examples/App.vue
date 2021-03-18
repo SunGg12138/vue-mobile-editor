@@ -37,7 +37,7 @@ export default {
 
     methods: {
         change () {
-            console.log('change', this.content);
+            // console.log('change', this.content);
         },
     }
 };

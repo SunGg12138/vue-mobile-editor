@@ -1,6 +1,7 @@
 import Vue from 'vue';
 import App from './App.vue';
 import pageages from '../pageages';
+import './style.css';
 
 Vue.use(pageages);
 
