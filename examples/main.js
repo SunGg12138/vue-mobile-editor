@@ -1,9 +1,8 @@
 import Vue from 'vue';
 import App from './App.vue';
-import pageages from '../pageages';
+import packages from '../packages';
 import './style.css';
-
-Vue.use(pageages);
+Vue.use(packages);
 
 Vue.config.productionTip = false;
 

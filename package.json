@@ -1,10 +1,13 @@
 {
-  "name": "vue-mobile-editor",
+  "name": "vue-mobile-editor-pro",
   "version": "0.1.0",
-  "private": true,
+  "private": false,
+  "main": "lib/vue-mobile-editor.umd.min.js",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
+    "build-lib": "vue-cli-service build --target lib --name vue-mobile-editor --dest lib packages/index.js",
+    "build-theme": "gulp build --gulpfile packages/theme-default/gulpfile.js && cp-cli packages/theme-default/lib lib/theme-default",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
