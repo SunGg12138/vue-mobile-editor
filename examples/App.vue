@@ -8,6 +8,7 @@
             :view-style="{ borderColor: '#ddd' }"
             :mobile-types="mobile_types"
             @change="change"
+            placeholder="在这里输入..."
         >
             <!-- 内容头部信息，可以展示标题名称，发布时间等信息 -->
             <div slot="content-head" style="padding: 0 10px;">
