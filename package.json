@@ -1,6 +1,6 @@
 {
   "name": "vue-mobile-editor-pro",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "private": false,
   "main": "lib/vue-mobile-editor.umd.min.js",
   "scripts": {

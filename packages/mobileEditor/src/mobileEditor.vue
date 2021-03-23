@@ -218,6 +218,9 @@ export default {
     background: #f8f8f8;
     color: #000;
     font-size: 12px;
+    overflow: hidden;
+    text-overflow:ellipsis;
+    white-space: nowrap;
 }
 
 </style>
